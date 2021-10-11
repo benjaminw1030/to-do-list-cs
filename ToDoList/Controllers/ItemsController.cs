@@ -18,7 +18,7 @@ namespace ToDoList.Controllers
 
     public ActionResult Index()
     {
-      return View(_db.Items.ToList());
+      return View(_db.Items.OrderBy(item => item.DueDate).ToList());
     }
 
     public ActionResult Create()
@@ -70,17 +70,17 @@ namespace ToDoList.Controllers
 
     public ActionResult Delete(int id)
     {
-      var thisItem = _db.Items.FirstOrDefault(item => item.ItemId == id);
-      return View(thisItem);
+        var thisItem = _db.Items.FirstOrDefault(item => item.ItemId == id);
+        return View(thisItem);
     }
 
     [HttpPost, ActionName("Delete")]
     public ActionResult DeleteConfirmed(int id)
     {
-      var thisItem = _db.Items.FirstOrDefault(item => item.ItemId == id);
-      _db.Items.Remove(thisItem);
-      _db.SaveChanges();
-      return RedirectToAction("Index");
+        var thisItem = _db.Items.FirstOrDefault(item => item.ItemId == id);
+        _db.Items.Remove(thisItem);
+        _db.SaveChanges();
+        return RedirectToAction("Index");
     }
 
     public ActionResult AddCategory(int id)
@@ -104,7 +104,7 @@ namespace ToDoList.Controllers
     [HttpPost]
     public ActionResult DeleteCategory(int joinId)
     {
-      var joinEntry = _db.CategoryItem.FirstOrDefault(entry => entry.CategoryId == joinId);
+      var joinEntry = _db.CategoryItem.FirstOrDefault(entry => entry.CategoryItemId == joinId);
       _db.CategoryItem.Remove(joinEntry);
       _db.SaveChanges();
       return RedirectToAction("Index");
